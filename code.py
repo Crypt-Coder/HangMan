@@ -9,12 +9,14 @@ playOn = True
 print "THE HANGMAN GAME!!!"
 print "Can u guess the names of this Famous T.V. Shows!!!"
 #Currently just supports Famous T.V. Shows
+print "***** INSTRUCTIONS *****\n1.Type 'hint' for in game hints\n2.Type 'skip' to move to next word"
+print "3.Type 'quit' to exit"
 fp = open("tvshows.txt")
 words = fp.readlines()          #all the words even have a '\n' at the end
 donewith = []
 while playOn:
     if len(donewith) == len(words): donewith=[]     # check if the all the words are covered
-    sel = random.randint(0,len(words))
+    sel = random.randint(0,len(words)-1)
     while sel in donewith:
         sel = random.randint(0,len(words))
     donewith.append(sel)
@@ -29,11 +31,12 @@ while playOn:
         else:
             guess += char
     print guess
-    # print word
     print "\nSo start guessing the name"
-    #function for main structure of game
-    noOfGuess = game(word, guess, blanks)
-    print "Total Number of Guesses required:-",noOfGuess
-    dec = ''
-    while (dec!='y' and dec!='n'):  dec=raw_input("Do you wish to play again?(y/n):")
-    if dec=='n': playOn = False
+    noOfGuess = game(word, guess, blanks)          #function for main structure of game
+    if(noOfGuess==-1):
+        print "Hard Luck!!!\nThe name was:-",word
+    else:
+        print "Total Number of Guesses required:-",noOfGuess
+        dec = ''
+        while (dec!='y' and dec!='n'):  dec=raw_input("Do you wish to play again?(y/n):")
+        if dec=='n': playOn = False
