@@ -7,15 +7,19 @@ def game(word,guess,blanks):
     selectedChar = []
     #declared here so the hints do not get repeated
     vowels = ['a','e','i','o','u']
-    consonants = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z']
+    noOfHints = 3
     while blanks:
         character = ''
         while (character==''):  character=raw_input("Enter a character(case insensitive):-")
         if character.lower() == 'skip':
             return -1
         if character.lower() == 'hint':
-            vowels,consonants = hint(selectedChar,word.lower(),vowels,consonants)
-            print guess
+            if noOfHints:
+                vowels = hint(selectedChar,word.lower(),vowels)
+                print guess
+                noOfHints-=1
+            else:
+                print "Sorry you have no hints left :("
             continue
         if character.lower() == 'quit':
             exit()
@@ -31,7 +35,7 @@ def game(word,guess,blanks):
         print guess
     return noOfGuess
 
-def hint(selectedChar,word,vowels,consonants):
+def hint(selectedChar,word,vowels):
     flag = 0
     if vowels!=[]:
         ch=random.choice(vowels)
@@ -46,16 +50,13 @@ def hint(selectedChar,word,vowels,consonants):
                 print "Word does not contains '",ch,"'..."
             vowels.remove(ch)
             flag = 1
-    if consonants!=[] and not flag:
-        ch=random.choice(consonants)
-        while consonants!=[] and ch in selectedChar:
-            consonants.remove(ch)
-            if consonants!=[]:
-                ch = random.choice(consonants)
-        if(consonants!=[]):
-            if ch in word:
-                print "Word contains '",ch,"'..."
-            else:
-                print "Word does not contains '",ch,"'..."
-            consonants.remove(ch)
-    return vowels,consonants
+    if flag==0:
+        consonents = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z']
+        temp = list(''.join([l for l in word.strip() if l in consonents]))
+        ch=random.choice(temp)
+        while temp!=[] and ch in selectedChar:
+            temp.remove(ch)
+            if temp!=[]:
+                ch = random.choice(temp)
+        print "Word contains '",ch,"'..."
+    return vowels

@@ -9,7 +9,7 @@ playOn = True
 print "THE HANGMAN GAME!!!"
 print "Can u guess the names of this Famous T.V. Shows!!!"
 #Currently just supports Famous T.V. Shows
-print "***** INSTRUCTIONS *****\n1.Type 'hint' for in game hints\n2.Type 'skip' to move to next word"
+print "***** INSTRUCTIONS *****\n1.Type 'hint' for in game hints(3 left)\n2.Type 'skip' to move to next word"
 print "3.Type 'quit' to exit"
 fp = open("tvshows.txt")
 words = fp.readlines()          #all the words even have a '\n' at the end
