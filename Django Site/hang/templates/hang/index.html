@@ -1,0 +1,46 @@
+<head>
+    <title>{% block title %}Hangman{% endblock%}</title>
+    <!--Loads the path to my static files -->
+    {% load staticfiles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'hang/style.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<div>
+    {% for char in guess %}
+        {{char}}
+    {% endfor %}
+</div>
+<form class="navbar-form navbar-left" method="post" action="{% url 'hang:game' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <input type="text" class="form-control" name="guessed" value="">
+        <input type="hidden" name="wrongGuess" value={{wrongGuess}}>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+    <div>
+        {% with imageurl="hang/images/hang_"|add:wrongGuess|add:"n.gif" %}
+            <img src="{% static imageurl %}" alt="Hangman Image"/>
+        {% endwith %}
+        {% if wrongGuess == "7" %}
+            <br>Sorry, you have been hanged!!!<br>
+            The Answer was {{answer}}
+        {% endif %}
+    </div>
+</form>
+<div>
+    <form class="navbar-form navbar-left" method="post" action="{% url 'hang:hint' %}">
+        {% csrf_token %}
+        {% if wrongGuess == '4' or wrongGuess == '5' or wrongGuess == '6' %}
+            {% if noOfHints != 0 %}
+                <button type="submit" class="btn btn-warning" name="hinter">Hint</button>
+            {% endif %}
+        {%endif%}
+    </form>
+    {{hint}}
+</div>
+<div class="nav navbar-nav navbar-right">
+    <img src="{% static "hang/images/animhangman.gif" %}" alt="Hangman Image"/>
+</div>
